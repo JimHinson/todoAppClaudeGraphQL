@@ -7,7 +7,8 @@
 http://localhost:4000/
 # Accessing the client:
 http://localhost:3000/
-
+# Access GraphiQL for testing:
+http://localhost:4000/graphql
 
 
 To Do app written by Claude using graphQL

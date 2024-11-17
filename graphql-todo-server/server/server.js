@@ -1,4 +1,3 @@
-// server/server.js
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
 const cors = require('cors');
@@ -29,7 +28,6 @@ const typeDefs = gql`
   }
 `;
 
-// Resolvers
 const resolvers = {
   Query: {
     todos: () => todos,
@@ -61,23 +59,28 @@ const resolvers = {
 
 async function startServer() {
   const app = express();
-  
-  // Enable CORS
   app.use(cors());
 
-  const server = new ApolloServer({ 
-    typeDefs, 
+  const server = new ApolloServer({
+    typeDefs,
     resolvers,
-    playground: true,
-    introspection: true
+    playground: {
+      endpoint: '/graphql',
+      settings: {
+        'editor.theme': 'dark',
+        'editor.reuseHeaders': true,
+      },
+    },
+    introspection: true,
   });
 
   await server.start();
   server.applyMiddleware({ app });
 
-  app.listen({ port: 4000 }, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-  );
+  app.listen({ port: 4000 }, () => {
+    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+    console.log(`📝 GraphQL Playground available at http://localhost:4000${server.graphqlPath}`);
+  });
 }
 
 startServer();
